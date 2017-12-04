@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.bis.service;
 import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.CommonUtils;
 import com.thinkgem.jeesite.common.utils.HttpUtil;
 import com.thinkgem.jeesite.common.utils.JsonVO;
 import com.thinkgem.jeesite.modules.bis.dao.BisSmsTemplateDao;
@@ -70,7 +71,8 @@ public class BisSmsTemplateService extends CrudService<BisSmsTemplateDao, BisSms
                 String body = null;
 
                 Map<String, Object> paramMap = new HashMap<String, Object>();
-                String params = bisSmsTemplate.getParams().replace("[mobile]", mobile);
+                String params = bisSmsTemplate.getParams().replace("[mobile]", mobile);//替换手机号
+                    params = params.replace("[token_id]",CommonUtils.getUniqueId());//替换token
                 String paramsStr[] = params.split("&amp;");
                 for (String par : paramsStr) {
                     String pars[] = par.split("=");
@@ -100,7 +102,7 @@ public class BisSmsTemplateService extends CrudService<BisSmsTemplateDao, BisSms
             }
         }
         logger.info("发送短信错误总条数：" + errorNum);
-        return new JsonVO();
+        return new JsonVO(bisSmsTemplatesList.size()-errorNum);
     }
 
 }

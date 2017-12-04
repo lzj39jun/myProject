@@ -25,6 +25,11 @@
                 type:"POST",
                 data:{mobile:mobile,id:id},
                 success: function(data){
+                    if(data.code==200){
+                        top.$.jBox.tip('发送成功:'+data.result+'条','warning');
+                    }else {
+                        top.$.jBox.tip('发送失败','warning');
+                    }
                 console.log(data);
             }});
         }
@@ -61,6 +66,7 @@
     <thead>
     <tr>
         <th>名称</th>
+        <th>url</th>
         <th>创建时间</th>
         <shiro:hasPermission name="bis:bisSmsTemplate:edit"><th>操作</th></shiro:hasPermission>
     </tr>
@@ -71,6 +77,9 @@
             <td><a href="${ctx}/bis/bisSmsTemplate/form?id=${bisSmsTemplate.id}">
                     ${bisSmsTemplate.name}
             </a></td>
+            <td>
+                ${bisSmsTemplate.url}
+            </td>
             <td>
                 <fmt:formatDate value="${bisSmsTemplate.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
             </td>
