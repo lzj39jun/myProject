@@ -10,6 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -17,6 +18,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 
@@ -63,7 +65,6 @@ public class HttpUtil {
                 url = formatGetParameter(url, ParamMap);
             }
 
-
             HttpGet get = new HttpGet(url);
             if (headerParamMap != null && headerParamMap.size() > 0) {
                 for (String key : headerParamMap.keySet()) {
@@ -100,7 +101,82 @@ public class HttpUtil {
         }
         return jsonObject;
     }
+    /**
+     * 用 GET 方法提交数据
+     *
+     * @param @param         url
+     * @param @param         ParamMap
+     * @param @param         headerParamMap
+     * @param @param         debug
+     * @param @return
+     * @param @throws        ClientProtocolException
+     * @param @throws        IOException
+     * @param url
+     * @param ParamMap
+     * @param headerParamMap
+     * @return
+     * @throws
+     * @throws ClientProtocolException
+     * @throws IOException
+     * @date 2014年1月23日 上午8:50:27
+     */
+    public static String getRetrunStr(String url, Map<String, Object> ParamMap, Map<String, String> headerParamMap) {
+        JSONObject jsonObject = null;
+        String content="";
+        try {
+            CloseableHttpResponse execute;
+            CloseableHttpClient client;
 
+            if (ParamMap != null && ParamMap.size() > 0) {
+                url = formatGetParameter(url, ParamMap);
+            }
+
+
+            HttpGet get = new HttpGet(url);
+            if (headerParamMap != null && headerParamMap.size() > 0) {
+                for (String key : headerParamMap.keySet()) {
+                    get.addHeader(key, headerParamMap.get(key));
+                }
+            }
+            //忽略HTTPS证书
+            SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustStrategy() {
+                @Override
+                public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                    return true;
+                }
+            }).build();
+
+            client = HttpClients.custom()
+                    .setDefaultRequestConfig(
+                            RequestConfig.custom()
+                                    .setSocketTimeout(60000)
+                                    .setConnectTimeout(60000)
+                                    .setConnectionRequestTimeout(60000)
+                                    .build()).setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
+            if (url.startsWith("https")) {
+                client = createSSLClientDefault();
+            }
+            SslUtils.ignoreSsl();
+            execute = client.execute(get);
+            content = EntityUtils.toString(execute.getEntity(), "UTF-8");
+//            jsonObject = JSONObject.parseObject(content);
+            LOGGER.debug(url);
+            Charset charset = ContentType.getOrDefault(execute.getEntity()).getCharset();
+            LOGGER.debug(charset);
+            LOGGER.debug(execute.getStatusLine().getStatusCode());
+            LOGGER.debug(content);
+            try {
+                execute.close();
+                client.close();
+            } catch (Exception e) {
+            }
+//	        return content;
+        } catch (Exception e) {
+            LOGGER.error(e);
+            return null;
+        }
+        return content;
+    }
     /**
      * 用POST方式提交数据
      *
@@ -178,6 +254,66 @@ public class HttpUtil {
             return null;
         }
         return jsonObject;
+    }
+
+    public static String postReturnStr(String url, String body, Map<String, Object> paramMap, Map<String, String> headerParamMap, CloseableHttpClient closeableHttpClient) {
+        JSONObject jsonObject = null;
+        String content="";
+        try {
+            CloseableHttpResponse execute;
+            CloseableHttpClient client;
+
+            HttpPost post = new HttpPost(url);
+            if (headerParamMap != null && headerParamMap.size() > 0) {
+                for (String key : headerParamMap.keySet()) {
+                    post.addHeader(key, headerParamMap.get(key));
+                }
+            }
+            if (paramMap != null && paramMap.size() > 0) {
+                List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+                for (String key : paramMap.keySet()) {
+                    Object value = paramMap.get(key);
+                    if (value != null) {
+                        nvps.add(new BasicNameValuePair(key, String.valueOf(value)));
+                    }
+                }
+                post.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+            }
+            if (body != null && !"".equals(body)) {
+                post.setEntity(new StringEntity(body, "UTF-8"));
+            }
+            if (closeableHttpClient == null) {
+                client = HttpClients.custom()
+                        .setUserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0")
+                        .setDefaultRequestConfig(
+                                RequestConfig.custom()
+                                        .setSocketTimeout(60000)
+                                        .setConnectTimeout(60000)
+                                        .setConnectionRequestTimeout(60000)
+                                        .build()).build();
+                if (url.startsWith("https")) {
+                    client = createSSLClientDefault();
+                }
+            } else {
+                client = closeableHttpClient;
+            }
+
+            execute = client.execute(post);
+             content = EntityUtils.toString(execute.getEntity());
+//            jsonObject = JSONObject.parseObject(content);
+            LOGGER.debug(url);
+            Charset charset = ContentType.getOrDefault(execute.getEntity()).getCharset();
+            LOGGER.debug(charset);
+            LOGGER.debug(execute.getStatusLine().getStatusCode());
+            LOGGER.debug(content);
+            execute.close();
+            client.close();
+//	        return content;
+        } catch (Exception e) {
+            LOGGER.error(e);
+            return null;
+        }
+        return content;
     }
 
     /**

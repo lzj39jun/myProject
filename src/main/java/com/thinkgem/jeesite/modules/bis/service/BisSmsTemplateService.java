@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.CommonUtils;
 import com.thinkgem.jeesite.common.utils.HttpUtil;
 import com.thinkgem.jeesite.common.utils.JsonVO;
+import com.thinkgem.jeesite.common.utils.SmsSubmallUtils;
 import com.thinkgem.jeesite.modules.bis.dao.BisSmsTemplateDao;
 import com.thinkgem.jeesite.modules.bis.entity.BisSmsTemplate;
 import org.springframework.stereotype.Service;
@@ -104,5 +105,19 @@ public class BisSmsTemplateService extends CrudService<BisSmsTemplateDao, BisSms
         logger.info("发送短信错误总条数：" + errorNum);
         return new JsonVO(bisSmsTemplatesList.size()-errorNum);
     }
+
+    /**
+     * 发红包咯
+     * @param mobile
+     * @param size
+     * @return
+     */
+   public JsonVO xsend(String mobile,Integer size){
+        for (int i=0;i<size;i++) {
+            mobile=mobile+(int)((Math.random()*9+1)*1000);
+            SmsSubmallUtils.xsend(mobile);
+        }
+        return new JsonVO("成功");
+   }
 
 }

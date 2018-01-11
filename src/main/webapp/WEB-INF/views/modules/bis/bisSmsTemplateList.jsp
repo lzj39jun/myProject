@@ -57,6 +57,12 @@
         <li><label>手机号：</label>
             <input id="mobile" class="input-medium">
         </li>
+        <li><label>区段1867188：</label>
+            <input id="phone" class="input-medium">
+        </li>
+        <li><label>数量：</label>
+            <input id="count" class="input-medium">
+        </li>
         <li class="btns"><input class="btn btn-primary" type="button" onclick="send()" value="发送"/></li>
         <li class="clearfix"></li>
     </ul>
