@@ -164,7 +164,7 @@ public class HttpUtil {
             Charset charset = ContentType.getOrDefault(execute.getEntity()).getCharset();
             LOGGER.debug(charset);
             LOGGER.debug(execute.getStatusLine().getStatusCode());
-            LOGGER.debug(content);
+//            LOGGER.debug(content);
             try {
                 execute.close();
                 client.close();
@@ -305,7 +305,7 @@ public class HttpUtil {
             Charset charset = ContentType.getOrDefault(execute.getEntity()).getCharset();
             LOGGER.debug(charset);
             LOGGER.debug(execute.getStatusLine().getStatusCode());
-            LOGGER.debug(content);
+//            LOGGER.debug(content);
             execute.close();
             client.close();
 //	        return content;
