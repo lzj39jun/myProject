@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,15 +119,26 @@ public class BisMovieService extends CrudService<BisSmsTemplateDao, BisSmsTempla
      * @param name 名称
      * @return
      */
-    public List<BisMovie> getBisMovieList(String name) {
+    public List<BisMovie> getBisMovieList(String name)  {
         String url = "https://www.80s.tw/search";
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("keyword", name);
-        Map<String, String> headMap = new HashMap<String, String>();
-        headMap.put("Content-Type", "application/x-www-form-urlencoded");
-        String str = HttpUtil.postReturnStr(url, null, map, headMap, null);
-        Document doc = Jsoup.parse(str);
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("keyword", name);
+//        Map<String, String> headMap = new HashMap<String, String>();
+//        headMap.put("Content-Type", "application/x-www-form-urlencoded");
+//        String str = HttpUtil.postReturnStr(url, null, map, headMap, null);
+
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("url" + url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                    .timeout(3000).data("keyword",name)
+                    .post();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        Document doc = Jsoup.parse(str);
         Element block3 = doc.getElementById("block3");
         Element ul = block3.getElementsByClass("clearfix search_list").get(0);
         Elements lis = ul.getElementsByTag("li");
