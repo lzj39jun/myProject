@@ -5,7 +5,7 @@
         <nav class="left">
             <a href="#" data-icon="previous" data-target="back">返回</a>
         </nav>
-        <h1 class="title">用户列表</h1>
+        <h1 class="title">电影列表</h1>
     </header>
     <article class="active">
     	<div style="line-height:50px;padding:10px;">
