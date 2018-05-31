@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,15 +51,28 @@
         </div>
         <!-- 这里是页面内容区 -->
         <div class="content">
+            <%--<div class="content-block-title">电影名称</div>--%>
+            <%--<div class="card demo-card-header-pic">--%>
+                <%--<div valign="bottom" class="card-header color-white no-border no-padding">--%>
+                    <%--<img class='card-cover' src="image/movie.jpg" alt="">--%>
+                <%--</div>--%>
+                <%--<div class="card-content">--%>
+                    <%--<div class="card-content-inner">--%>
+                        <%--<p class="color-gray">年份：2018</p>--%>
+                        <%--<p>地区：大陆</p>--%>
+                        <%--<p>主演：张雪迎 秦俊杰 黄圣池 陈欣予 黄德毅 麦迪娜 袁子芸 李逸男 刘佳</p>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <%--<div class="card-footer">--%>
+                    <%--<a href="#" class="link">获取地址</a>--%>
+                <%--</div>--%>
+            <%--</div>--%>
+        </div>
+        <!-- About Popup -->
+        <div class="popup popup-about">
             <div class="content-block">
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
-                这里是cont444ent这里是cont444ent这里是cont444ent
+                <p><a href="#" class="close-popup">返回</a></p>
+
             </div>
         </div>
     </div>
@@ -88,17 +102,43 @@
     $.config = {
         autoInit: true
     }
-    // 路由功能开关过滤器，返回 false 表示当前点击链接不使用路由
-    routerFilter: function ($link) {
-        // 某个区域的 a 链接不想使用路由功能
-        if ($link.is('.disable-router a')) {
-            return false;
-        }
-
-        return true;
+    $(function(){
+        list(1);
+    });
+    $("#search").blur(function () {
+        console.log(this.value);
+        list(this.value);
+    })
+    function list(name) {
+        $.post("${api}/movie/qqpList",{name:name},function(result){
+            console.log(result);
+            if(result.success) {
+                var content="";
+                if(result.data.count>0){
+                    $.each(result.data.list, function (i,data) {
+                        content+=' <div class="content-block-title">'+data.name+'</div> '+
+                        '  <div class="card demo-card-header-pic">'+
+                        '      <div valign="bottom" class="card-header color-white no-border no-padding">'+
+                        '         <img class="card-cover" src="image/movie.jpg" alt="">'+
+                        '      </div>'+
+                        '         <div class="card-content">'+
+                        '            <div class="card-content-inner">'+
+                        '                <p class="color-gray">年份：'+data.year+'</p>'+
+                        '                 <p>'+data.region+'</p>'+
+                        '               <p>'+data.performer+'</p>'+
+                        '           </div>'+
+                        '       </div>'+
+                        '       <div class="card-footer">'+
+                        '           <a href="#" class="link">获取地址</a>'+
+                        '       </div>'+
+                        '   </div>'
+                    })
+                }
+                $(".content").html(content);
+            }
+        });
     }
 </script>
-<script src='sm.min.js'></script>
 
 </body>
 </html>

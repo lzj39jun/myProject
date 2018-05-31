@@ -10,4 +10,5 @@
 <%@ taglib prefix="cms" tagdir="/WEB-INF/tags/cms" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}${fns:getAdminPath()}"/>
 <c:set var="ctxStatic" value="${pageContext.request.contextPath}/static"/>
+<c:set var="api" value="${pageContext.request.contextPath}${fns:getApiPath()}"/>
 <%--<link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />--%>

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,48 +27,11 @@ import java.util.Map;
  * @version 2017-09-18
  */
 @RestController
-@RequestMapping(value = "${apiPath}/movie/movie")
+@RequestMapping(value = "${apiPath}/movie")
 public class MovieController extends BaseController {
 
     @Autowired
     private BisMovieService bisMovieService;
-
-
-    /**
-     * 80s列表
-     *
-     * @param bisMovie
-     * @param request
-     * @param response
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = {"list", ""})
-    public String list(BisMovie bisMovie, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<BisMovie> page = new Page<BisMovie>();
-        if (StringUtils.isNotEmpty(bisMovie.getName())) {
-            List<BisMovie> movies = bisMovieService.getBisMovieList(bisMovie.getName());
-            page.setList(movies);
-            page.setCount(Long.valueOf(movies.size()));
-        }
-        model.addAttribute("page", page);
-        return "modules/bis/bisMovieList";
-    }
-
-
-    /**
-     * 80s详情
-     *
-     * @param bisMovie
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "form")
-    public String form(BisMovie bisMovie, Model model) {
-        bisMovie = bisMovieService.getBisMovieView(bisMovie.getId());
-        model.addAttribute("bisMovie", bisMovie);
-        return "modules/bis/bisMovieForm";
-    }
 
     /**
      * 七七铺列表
