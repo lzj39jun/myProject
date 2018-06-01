@@ -62,8 +62,7 @@
                     ${bisMovie.thunder}
             </td>
             <td>
-                <input id="copyUrl" class="btn btn-primary" type="button" data-clipboard-text="${bisMovie.thunder}"
-                       value="复制"/>
+                <input id="copyUrl" class="btn btn-primary" type="button" data-clipboard-text="${bisMovie.thunder}" value="复制"/>
             </td>
         </tr>
     </c:forEach>
