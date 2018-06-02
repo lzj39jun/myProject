@@ -143,7 +143,6 @@
         });
     });
     $("#search").blur(function () {
-        console.log(this.value);
         list(this.value);
     })
 
