@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>雾途电影网</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="image/movieIcon.jpg">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
@@ -194,7 +194,7 @@
                             '           </div>' +
                             '       </div>' +
                             '       <div class="card-footer">' +
-                            '           <a href="#" class="link movieInfo" movieid="' + data.a + '">获取地址</a>' +
+                            '           <a href="#" class="link movieInfo" movieid="' + data.a + '">获取迅雷下载地址</a>' +
                             '       </div>' +
                             '   </div>'
                     })

@@ -49,7 +49,7 @@ public class LogUtils {
 	 */
 	public static void saveLog(HttpServletRequest request, Object handler, Exception ex, String title){
 		User user = UserUtils.getUser();
-		if (user != null && user.getId() != null){
+//		if (user != null && user.getId() != null){
 			Log log = new Log();
 			log.setTitle(title);
 			log.setType(ex == null ? Log.TYPE_ACCESS : Log.TYPE_EXCEPTION);
@@ -60,7 +60,7 @@ public class LogUtils {
 			log.setMethod(request.getMethod());
 			// 异步保存日志
 			new SaveLogThread(log, handler, ex).start();
-		}
+//		}
 	}
 
 	/**
@@ -94,9 +94,9 @@ public class LogUtils {
 			// 如果有异常，设置异常信息
 			log.setException(Exceptions.getStackTraceAsString(ex));
 			// 如果无标题并无异常日志，则不保存信息
-			if (StringUtils.isBlank(log.getTitle()) && StringUtils.isBlank(log.getException())){
-				return;
-			}
+//			if (StringUtils.isBlank(log.getTitle()) && StringUtils.isBlank(log.getException())){
+//				return;
+//			}
 			// 保存日志信息
 			log.preInsert();
 			logDao.insert(log);
