@@ -3,6 +3,7 @@ package com.thinkgem.jeesite.modules.bis.utils;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.HttpUtil;
+import com.thinkgem.jeesite.common.utils.JsonUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
@@ -212,6 +213,7 @@ public class FilmUtil {
             LOGGER.error(e);
             e.printStackTrace();
         }
+          LOGGER.error("pageList"+ JsonUtils.object2Json(pageList));
         return pageList;
     }
 
