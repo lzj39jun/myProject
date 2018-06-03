@@ -315,6 +315,7 @@
         $.closeModal('.popup-services');
         $.popup('.popup-about');
         player.videoPause();
+        player.videoClear()
     });
 </script>
 
