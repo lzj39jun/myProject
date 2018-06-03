@@ -63,6 +63,18 @@ public class MovieController extends BaseController {
         responseObject.setData(FilmUtil.findQqpViewByUrl(bisMovie.getId()));
         return responseObject;
     }
+    /**
+     * 七七铺播放地址
+     *
+     * @param bisMovie
+     * @return
+     */
+    @RequestMapping(value = "findM3u8Url")
+    public ResponseObject findM3u8Url(BisMovie bisMovie) {
+        ResponseObject responseObject = buildResObject();
+        responseObject.setData(FilmUtil.findM3u8Url(bisMovie.getId()));
+        return responseObject;
+    }
 
 
 }

@@ -10,6 +10,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -126,7 +128,7 @@ public class FilmUtil {
 
             Document doc = Jsoup.connect("http://www.qiqipu.com/search.asp?page=" + page + "&searchword=" + name + "&searchtype=-1")
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                    .timeout(3000)
+                    .timeout(10000)
                     .get();
             //获取分页
 //			 LOGGER.info("---------------doc："+doc);
@@ -179,24 +181,32 @@ public class FilmUtil {
         try {
             Document doc = Jsoup.connect("http://www.qiqipu.com" + url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                    .timeout(3000)
+                    .timeout(10000)
                     .get();
             Elements lis = doc.getElementsByClass("down_list").get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
+//            Elements vlink_3 = doc.getElementsByClass("vlist");
+//            Elements urlLis = null;
+//            if (vlink_3 != null) {
+//                urlLis = vlink_3.get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
+//            }
+            String ids[]=url.split("/");
+            String id=ids[ids.length-1];
             List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
-            for (Element li : lis) {
-                Elements a = li.getElementsByTag("a");
+            for (int i = 0; i < lis.size(); i++) {
+                Elements a = lis.get(i).getElementsByTag("a");
+                Elements thunder = lis.get(i).getElementsByTag("input");
                 Map<String, String> map = Maps.newHashMap();
                 map.put("title", a.get(0).attr("title"));
                 map.put("a", a.get(0).attr("href"));
-                //获取种子
-//	 			Document docs = Jsoup.connect("http://www.qiqipu.com"+a.get(0).attr("href"))
-//	 					  .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-//	 					  .timeout(3000)
-//	 					  .get();
-//	 			Elements thunders=docs.getElementsByClass("down_url");
-	 			map.put("thunder", findQqpThunder( a.get(0).attr("href")));
+                map.put("thunder", thunder.get(0).attr("value"));
+                map.put("m3u8Url", "");
+//                if (urlLis != null) {
+//                    map.put("m3u8Url", urlLis.get(lis.size() - 1 - i).getElementsByTag("a").get(0).attr("href"));
+                    map.put("m3u8Url", url+"/player.html?"+id+"-0-"+i);
+//                }
                 maps.add(map);
             }
+            pageList.setCount(maps.size());
             pageList.setList(maps);
         } catch (Exception e) {
             LOGGER.error(e);
@@ -229,6 +239,60 @@ public class FilmUtil {
             e.printStackTrace();
         }
         return thunder;
+    }
+
+
+    /**
+     * 获取m3u8
+     *
+     * @param url
+     * @return String
+     * @Description
+     * @author jun
+     * @time:2017年8月4日 下午5:23:50
+     */
+    public static String findM3u8Url(String url) {
+        String m3u8url = "";
+        try {
+            //获取js
+            Document docs = Jsoup.connect("http://www.qiqipu.com" + url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                    .timeout(3000)
+                    .get();
+            Elements playbox = docs.getElementsByClass("playbox");
+            String js = playbox.get(0).getElementsByTag("script").get(0).attr("src");
+            //获取js内容解析
+            String urlJs = HttpUtil.getRetrunStr(js, null, null);
+            ScriptEngineManager sem = new ScriptEngineManager();
+            ScriptEngine engine = sem.getEngineByName("javascript");
+            String m=url.substring(url.lastIndexOf("-")+1,url.length());
+            String urlM = "   " +
+                    "        var n = parseInt(nn); " +
+                    "        var m = parseInt(" + m + "); " +
+                    "        var list = VideoListJson; " +
+                    "        var data = []; " +
+                    "        if(list.length > 0) { " +
+                    "            var subs = list[Math.min(n, list.length - 1)][1]; " +
+                    "            data = subs[Math.min(m, subs.length - 1)].split('$'); " +
+                    "        } " +
+                    "            var url= data[1]; ";
+
+            urlJs = urlJs.substring(0, urlJs.lastIndexOf(",urlinfo")) + ";";
+            for (int n=0;n<10;n++) {
+                engine.put("nn",n);
+                engine.eval(urlJs + urlM);
+                m3u8url = (String) engine.get("url");
+                if(m3u8url.substring(m3u8url.lastIndexOf(".")+1,m3u8url.length()).equals("m3u8")){
+                    break;
+                }else {
+                    m3u8url="";
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error(e);
+            e.printStackTrace();
+        }
+        return m3u8url;
     }
 
     public static void main(String[] args) {
