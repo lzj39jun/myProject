@@ -42,10 +42,10 @@
         </nav>
         <div class="bar bar-header-secondary">
             <div class="searchbar">
-                <a class="searchbar-cancel">取消</a>
+                <a class="searchbar-cancel">搜索</a>
                 <div class="search-input">
                     <label class="icon icon-search" for="search"></label>
-                    <input type="search" id='search' placeholder='输入关键字...'/>
+                    <input type="search" id='search' placeholder='搜索电影'/>
                 </div>
             </div>
         </div>
