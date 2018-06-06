@@ -152,7 +152,7 @@
         autoInit: true
     }
     $(function () {
-        list("1");
+        list("复仇者联盟");
 
         //单个复制
         var clipboard = new Clipboard('#copyThunder');
