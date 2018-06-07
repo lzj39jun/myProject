@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="image/movieIcon.jpg">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="referrer" content="no-referrer">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
 
 
@@ -52,7 +53,24 @@
         <!-- 这里是页面内容区 -->
         <div class="content">
             <!-- 电影列表 -->
-            <div class="divList"></div>
+            <div class="divList">
+                 <div class="content-block-title"><h3>  data.name  </h3></div>  
+                  <div class="card demo-card-header-pic"> 
+                      <div valign="bottom" class="card-header color-white no-border no-padding"> 
+                             <img class="card-cover" src="image/movie.jpg"  alt="">
+                          </div>
+                         <div class="card-content">
+                                <div class="card-content-inner">
+                                        <p class="color-gray">年份：  data.year  </p>
+                                         <p>  data.region  </p>
+                                       <p>  data.performer  </p>
+                                   </div>
+                           </div>
+                       <div class="card-footer"> 
+                               <a href="#" class="link movieInfo" movieid="  data.a  ">在线播放</a> 
+                           </div> 
+                   </div>
+            </div>
             <!-- 免责声明 -->
             <div class="card">
                 <div class="card-content">
@@ -229,7 +247,7 @@
                         content += ' <div class="content-block-title"><h3>' + data.name + '</h3></div> ' +
                             '  <div class="card demo-card-header-pic">' +
                             '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
-                            '         <img class="card-cover" src="image/movie.jpg" alt="">' +
+                            '         <img class="card-cover" src="'+data.img+'" alt="">' +
                             '      </div>' +
                             '         <div class="card-content">' +
                             '            <div class="card-content-inner">' +
