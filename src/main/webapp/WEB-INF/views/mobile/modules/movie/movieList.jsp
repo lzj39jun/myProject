@@ -54,22 +54,6 @@
         <div class="content">
             <!-- 电影列表 -->
             <div class="divList">
-                 <div class="content-block-title"><h3>  data.name  </h3></div>  
-                  <div class="card demo-card-header-pic"> 
-                      <div valign="bottom" class="card-header color-white no-border no-padding"> 
-                             <img class="card-cover" src="image/movie.jpg"  alt="">
-                          </div>
-                         <div class="card-content">
-                                <div class="card-content-inner">
-                                        <p class="color-gray">年份：  data.year  </p>
-                                         <p>  data.region  </p>
-                                       <p>  data.performer  </p>
-                                   </div>
-                           </div>
-                       <div class="card-footer"> 
-                               <a href="#" class="link movieInfo" movieid="  data.a  ">在线播放</a> 
-                           </div> 
-                   </div>
             </div>
             <!-- 免责声明 -->
             <div class="card">
