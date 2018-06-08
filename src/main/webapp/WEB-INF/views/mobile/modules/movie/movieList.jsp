@@ -99,54 +99,12 @@
     </div>
 </div>
 
+</body>
 
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.js' charset='utf-8'></script>
 <script type="text/javascript" src="${ctxStatic}/clipboard/clipboard.min.js"></script>
 <script type="text/javascript" src="${ctxStatic}/ckplayer/ckplayer/ckplayer.js" charset="utf-8"></script>
-<script type="text/javascript">
-    //    var videoUrl="http://www.qiqipu.com/nplayer/ckplayer1/m3u8.swf";
-    //    $(function () {
-    //        changeVideo(videoUrl)
-    //    })
-    //
-    //    function changeVideo(videoUrl) {
-    //        var newVideoObject = {
-    //            container: '#video', //容器的ID
-    //            variable: 'player',
-    //            autoplay: true, //是否自动播放
-    //            loaded: 'loadedHandler', //当播放器加载后执行的函数
-    //            video: videoUrl
-    //        }
-    //        var player=new ckplayer(newVideoObject);
-    //        function loadedHandler(){//播放器加载后会调用该函数
-    //            player.addListener('time', timeHandler); //监听播放时间,addListener是监听函数，需要传递二个参数，'time'是监听属性，这里是监听时间，timeHandler是监听接受的函数
-    //        }
-    //        function timeHandler(t){
-    //            console.log('当前播放的时间：'+t);
-    //        }
-    //        //判断是需要重新加载播放器还是直接换新地址
-    //        if(player.playerType == 'html5video') {
-    //            if(player.getFileExt(videoUrl) == '.flv' || player.getFileExt(videoUrl) == '.m3u8' || player.getFileExt(videoUrl) == '.f4v' || videoUrl.substr(0, 4) == 'rtmp') {
-    //                player.removeChild();
-    //
-    //                player = null;
-    //                player = new ckplayer();
-    //                player.embed(newVideoObject);
-    //            } else {
-    //                player.newVideo(newVideoObject);
-    //            }
-    //        } else {
-    //            if(player.getFileExt(videoUrl) == '.mp4' || player.getFileExt(videoUrl) == '.webm' || player.getFileExt(videoUrl) == '.ogg') {
-    //                player = null;
-    //                player = new ckplayer();
-    //                player.embed(newVideoObject);
-    //            } else {
-    //                player.newVideo(newVideoObject);
-    //            }
-    //        }
-    //    }
-</script>
 <script>
     //打开自动初始化页面的功能
     //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
@@ -195,15 +153,15 @@
                 var content = "";
                 $.each(result.data.list, function (i, data) {
                     content += '<div class="card">'
-                                + '<div class="card-header"  style="word-wrap:break-all">' + data.title + '</div>'
-                                + '<div class="card-content">'
-                                + '  <div class="card-content-inner"  style="word-wrap:break-word">' + data.thunder + '</div>'
-                                + '</div>'
-                                + '<div class="card-footer">' +
-                                    '<a href="#" class="link" id="copyThunder" data-clipboard-text="' + data.thunder + '">复制迅雷地址</a>&nbsp;' +
-                                    '<a href="#" class="link m3u8"  data-m3u8Url="' + data.m3u8Url + '">在线播放</a>' +
-                                  '</div>'
-                            + '</div>'
+                        + '<div class="card-header"  style="word-wrap:break-all">' + data.title + '</div>'
+                        + '<div class="card-content">'
+                        + '  <div class="card-content-inner"  style="word-wrap:break-word">' + data.thunder + '</div>'
+                        + '</div>'
+                        + '<div class="card-footer">' +
+                        '<a href="#" class="link" id="copyThunder" data-clipboard-text="' + data.thunder + '">复制迅雷地址</a>&nbsp;' +
+                        '<a href="#" class="link m3u8"  data-m3u8Url="' + data.m3u8Url + '">在线播放</a>' +
+                        '</div>'
+                        + '</div>'
                 })
                 $(".card-div").html(content);
                 $.popup('.popup-about');
@@ -231,12 +189,17 @@
                         content += ' <div class="content-block-title"><h3>' + data.name + '</h3></div> ' +
                             '  <div class="card demo-card-header-pic">' +
                             '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
-                            '         <img class="card-cover" src="'+data.img+'" alt="">' +
-                            '      </div>' +
-                            '         <div class="card-content">' +
+                            '         <img class="card-cover" src="'+data.img+'" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
+                            '         <div class="card-content" style="top: -90px;left: -60px;">' +
                             '            <div class="card-content-inner">' +
                             '                <p class="color-gray">年份：' + data.year + '</p>' +
                             '                 <p>' + data.region + '</p>' +
+                            //                            '               <p>' + data.performer + '</p>' +
+                            '           </div>' +
+                            '       </div>' +
+                            '      </div>' +
+                            '         <div class="card-content">' +
+                            '            <div class="card-content-inner">' +
                             '               <p>' + data.performer + '</p>' +
                             '           </div>' +
                             '       </div>' +
@@ -320,6 +283,4 @@
         player.videoClear()
     });
 </script>
-
-</body>
 </html>
