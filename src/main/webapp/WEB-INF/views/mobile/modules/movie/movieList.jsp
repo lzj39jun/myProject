@@ -367,6 +367,8 @@
     //菜单切换
     $(document).on('click', '.external', function () {
         newlist($(this).attr("data-movieType"));
+        $(".active").removeClass("active");
+        $(this).addClass("active");
     });
 
 </script>
