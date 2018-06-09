@@ -15,10 +15,7 @@ import org.jsoup.select.Elements;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -157,6 +154,7 @@ public class FilmUtil {
                 map.put("year", em.get(0).text());
                 map.put("region", span.get(1).text());
                 map.put("performer", p.get(0).text());
+                map.put("number", (new Random().nextInt(9001) + 1000)+"");
                 maps.add(map);
             }
             pageList.setList(maps);
@@ -202,10 +200,8 @@ public class FilmUtil {
                 map.put("a", a.get(0).attr("href"));
                 map.put("thunder", thunder.get(0).attr("value"));
                 map.put("m3u8Url", "");
-//                if (urlLis != null) {
-//                    map.put("m3u8Url", urlLis.get(lis.size() - 1 - i).getElementsByTag("a").get(0).attr("href"));
                 map.put("m3u8Url", url + "/player.html?" + id + "-0-" + i);
-//                }
+
                 maps.add(map);
             }
             pageList.setCount(maps.size());
@@ -332,6 +328,7 @@ public class FilmUtil {
                     map.put("img", img.get(0).attr("src"));
                     map.put("name", img.get(0).attr("alt"));
                     map.put("year", regions[0]);
+                    map.put("number", (new Random().nextInt(901) + 100)+"");
                     if(regions.length>1){
                         map.put("region", "地区："+regions[1]);
                     }

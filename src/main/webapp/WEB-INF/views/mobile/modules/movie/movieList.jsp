@@ -202,7 +202,7 @@
                             '            <div class="card-content-inner">' +
                             '                <p class="color-gray">年份：' + data.year + '</p>' +
                             '                 <p>' + data.region + '</p>' +
-                            //                            '               <p>' + data.performer + '</p>' +
+                            '                 <p>播放量：' + data.number + '</p>' +
                             '           </div>' +
                             '       </div>' +
                             '      </div>' +
@@ -242,6 +242,7 @@
                             '            <div class="card-content-inner">' +
                             '                <p class="color-gray">年份：' + data.year + '</p>' +
                             '                 <p>' + data.region + '</p>' +
+                            '                 <p>播放量：' + data.number + '</p>' +
                             '           </div>' +
                             '       </div>' +
                             '      </div>' +
@@ -279,6 +280,7 @@
                     '            <div class="card-content-inner">' +
                     '                <p class="color-gray">年份：' + data.year + '</p>' +
                     '                 <p>' + data.region + '</p>' +
+                    '                 <p>播放量：' + data.number + '</p>' +
                     '           </div>' +
                     '       </div>' +
                     '      </div>' +
