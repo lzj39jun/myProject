@@ -23,22 +23,22 @@
         <!-- 标题栏 -->
         <header class="bar bar-nav">
             <a class="icon icon-me pull-left open-panel"></a>
-            <h1 class="title">电影</h1>
+            <h1 class="title">影视资源</h1>
         </header>
 
         <!-- 工具栏 -->
         <nav class="bar bar-tab">
-            <a class="tab-item external active" href="#">
+            <a class="tab-item external active" href="#" data-movieType="0">
                 <span class="icon icon-home"></span>
-                <span class="tab-label">首页</span>
+                <span class="tab-label">电影</span>
             </a>
-            <a class="tab-item external" href="#">
-                <span class="icon icon-star"></span>
-                <span class="tab-label">收藏</span>
+            <a class="tab-item external" href="#" data-movieType="1">
+                <span class="icon icon-computer"></span>
+                <span class="tab-label">电视剧</span>
             </a>
-            <a class="tab-item external" href="#">
-                <span class="icon icon-settings"></span>
-                <span class="tab-label">设置</span>
+            <a class="tab-item external" href="#" data-movieType="2">
+                <span class="icon icon-clock"></span>
+                <span class="tab-label">综艺</span>
             </a>
         </nav>
         <div class="bar bar-header-secondary">
@@ -58,7 +58,9 @@
             <!-- 免责声明 -->
             <div class="card">
                 <div class="card-content">
-                    <div class="card-content-inner">免责声明:本站所有视频均来自互联网收集而来，版权归原创者所有，如果侵犯了你的权益，请通知我们，我们会及时删除侵权内容，谢谢合作！联系邮箱 lzj39jun@163.com</div>
+                    <div class="card-content-inner">免责声明:本站所有视频均来自互联网收集而来，版权归原创者所有，如果侵犯了你的权益，请通知我们，我们会及时删除侵权内容，谢谢合作！联系邮箱
+                        lzj39jun@163.com
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,18 +108,19 @@
 <script type="text/javascript" src="${ctxStatic}/clipboard/clipboard.min.js"></script>
 <script type="text/javascript" src="${ctxStatic}/ckplayer/ckplayer/ckplayer.js" charset="utf-8"></script>
 <script>
-    var isPc=true;
+    var isPc = true;
     if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) { //移动端
-        isPc=false;
+        isPc = false;
     }
-    console.log(isPc);
     //打开自动初始化页面的功能
     //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
     $.config = {
         autoInit: true
     }
+    var newData;//最新资源数据
     $(function () {
-        list("复仇者联盟3");
+//        list("复仇者联盟3");
+        newDataList();
 
         //单个复制
         var clipboard = new Clipboard('#copyThunder');
@@ -154,7 +157,7 @@
         $.showPreloader();
         $.post("${api}/movie/qqpForm", {id: $(this).attr("movieid")}, function (result) {
             console.log(result);
-            if (result.success&&result.data.count>0) {
+            if (result.success && result.data.count > 0) {
                 var content = "";
                 $.each(result.data.list, function (i, data) {
                     content += '<div class="card">'
@@ -170,7 +173,7 @@
                 })
                 $(".card-div").html(content);
                 $.popup('.popup-about');
-            }else{
+            } else {
                 $.toast("暂无资源");
             }
             $.hidePreloader();
@@ -194,7 +197,7 @@
                         content += ' <div class="content-block-title"><h3>' + data.name + '</h3></div> ' +
                             '  <div class="card demo-card-header-pic">' +
                             '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
-                            '         <img class="card-cover" src="'+data.img+'" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
+                            '         <img class="card-cover" src="' + data.img + '" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
                             '         <div class="card-content" style="top: -90px;left: -60px;">' +
                             '            <div class="card-content-inner">' +
                             '                <p class="color-gray">年份：' + data.year + '</p>' +
@@ -219,16 +222,87 @@
             $.hidePreloader();
         });
     }
+
+    //最新资源列表数据
+    function newDataList() {
+        $.showPreloader();
+        $.post("${api}/movie/qqpNewList", {name: 1}, function (result) {
+            console.log(result);
+            if (result.success) {
+                var content = "";
+                newData = result.data;
+                var list = newData.movie;
+                if (list.length > 0) {
+                    $.each(list, function (i, data) {
+                        content += ' <div class="content-block-title"><h3>' + data.name + '</h3></div> ' +
+                            '  <div class="card demo-card-header-pic">' +
+                            '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
+                            '         <img class="card-cover" src="' + data.img + '" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
+                            '         <div class="card-content" style="top: -90px;left: -60px;">' +
+                            '            <div class="card-content-inner">' +
+                            '                <p class="color-gray">年份：' + data.year + '</p>' +
+                            '                 <p>' + data.region + '</p>' +
+                            '           </div>' +
+                            '       </div>' +
+                            '      </div>' +
+                            '       <div class="card-footer">' +
+                            '           <a href="#" class="link movieInfo" movieid="' + data.a + '">在线播放</a>' +
+                            '       </div>' +
+                            '   </div>'
+                    })
+                }
+                $(".divList").html(content);
+            }
+            $.hidePreloader();
+        }, "json");
+    }
+
+    //最新资源列表加载
+    function newlist(type) {
+        $.showPreloader();
+        var content = "";
+        var list
+        if (type == 0) {
+            list = newData.movie;
+        } else if (type == 1) {
+            list = newData.tv;
+        } else if (type == 2) {
+            list = newData.variety;
+        }
+        if (list.length > 0) {
+            $.each(list, function (i, data) {
+                content += ' <div class="content-block-title"><h3>' + data.name + '</h3></div> ' +
+                    '  <div class="card demo-card-header-pic">' +
+                    '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
+                    '         <img class="card-cover" src="' + data.img + '" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
+                    '         <div class="card-content" style="top: -90px;left: -60px;">' +
+                    '            <div class="card-content-inner">' +
+                    '                <p class="color-gray">年份：' + data.year + '</p>' +
+                    '                 <p>' + data.region + '</p>' +
+                    '           </div>' +
+                    '       </div>' +
+                    '      </div>' +
+                    '       <div class="card-footer">' +
+                    '           <a href="#" class="link movieInfo" movieid="' + data.a + '">在线播放</a>' +
+                    '       </div>' +
+                    '   </div>'
+            })
+        }
+        $(".divList").html(content);
+        $.hidePreloader();
+    }
+
     var player;
+
     //播放视频
     function changeVideo(videoUrl) {
         var newVideoObject = {
             container: '#video', //容器的ID
             variable: 'player',
             autoplay: true, //是否自动播放
-            html5m3u8:isPc,
+            html5m3u8: isPc,
 //            loaded: 'loadedHandler', //当播放器加载后执行的函数
-            video:videoUrl
+            video: videoUrl
         }
         player = new ckplayer(newVideoObject);
 
@@ -253,6 +327,7 @@
             }
         }
     }
+
     function loadedHandler() {//播放器加载后会调用该函数
         player.addListener('time', timeHandler); //监听播放时间,addListener是监听函数，需要传递二个参数，'time'是监听属性，这里是监听时间，timeHandler是监听接受的函数
     }
@@ -268,9 +343,9 @@
         $.post("${api}/movie/findM3u8Url", {id: $(this).attr("data-m3u8Url")}, function (result) {
             console.log(result);
             if (result.success) {
-                if(result.data==''){
+                if (result.data == '') {
                     $.toast("抱歉，暂无在线视频");
-                }else{
+                } else {
                     changeVideo(result.data);
                     $.popup('.popup-services');
                 }
@@ -287,6 +362,11 @@
         $.popup('.popup-about');
         player.videoPause();
         player.videoClear()
+    });
+
+    //菜单切换
+    $(document).on('click', '.external', function () {
+        newlist($(this).attr("data-movieType"));
     });
 
 </script>

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.HttpUtil;
 import com.thinkgem.jeesite.common.utils.JsonUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
@@ -13,9 +14,9 @@ import org.jsoup.select.Elements;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -190,8 +191,8 @@ public class FilmUtil {
 //            if (vlink_3 != null) {
 //                urlLis = vlink_3.get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
 //            }
-            String ids[]=url.split("/");
-            String id=ids[ids.length-1];
+            String ids[] = url.split("/");
+            String id = ids[ids.length - 1];
             List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
             for (int i = 0; i < lis.size(); i++) {
                 Elements a = lis.get(i).getElementsByTag("a");
@@ -203,7 +204,7 @@ public class FilmUtil {
                 map.put("m3u8Url", "");
 //                if (urlLis != null) {
 //                    map.put("m3u8Url", urlLis.get(lis.size() - 1 - i).getElementsByTag("a").get(0).attr("href"));
-                    map.put("m3u8Url", url+"/player.html?"+id+"-0-"+i);
+                map.put("m3u8Url", url + "/player.html?" + id + "-0-" + i);
 //                }
                 maps.add(map);
             }
@@ -213,7 +214,7 @@ public class FilmUtil {
             LOGGER.error(e);
             e.printStackTrace();
         }
-          LOGGER.error("pageList"+ JsonUtils.object2Json(pageList));
+        LOGGER.error("pageList" + JsonUtils.object2Json(pageList));
         return pageList;
     }
 
@@ -267,7 +268,7 @@ public class FilmUtil {
             String urlJs = HttpUtil.getRetrunStr(js, null, null);
             ScriptEngineManager sem = new ScriptEngineManager();
             ScriptEngine engine = sem.getEngineByName("javascript");
-            String m=url.substring(url.lastIndexOf("-")+1,url.length());
+            String m = url.substring(url.lastIndexOf("-") + 1, url.length());
             String urlM = "   " +
                     "        var n = parseInt(nn); " +
                     "        var m = parseInt(" + m + "); " +
@@ -280,14 +281,14 @@ public class FilmUtil {
                     "            var url= data[1]; ";
 
             urlJs = urlJs.substring(0, urlJs.lastIndexOf(",urlinfo")) + ";";
-            for (int n=0;n<10;n++) {
-                engine.put("nn",n);
+            for (int n = 0; n < 10; n++) {
+                engine.put("nn", n);
                 engine.eval(urlJs + urlM);
                 m3u8url = (String) engine.get("url");
-                if(m3u8url.substring(m3u8url.lastIndexOf(".")+1,m3u8url.length()).equals("m3u8")){
+                if (m3u8url.substring(m3u8url.lastIndexOf(".") + 1, m3u8url.length()).equals("m3u8")) {
                     break;
-                }else {
-                    m3u8url="";
+                } else {
+                    m3u8url = "";
                 }
             }
         } catch (Exception e) {
@@ -297,14 +298,61 @@ public class FilmUtil {
         return m3u8url;
     }
 
-    public static void main(String[] args) {
-//		Page<Map<String,String>> pageList=findViewByUrl("/dsj/gcj/32444/");
-        //%E6%88%91%E6%98%AF
+    /**
+     * 七七铺
+     * 最新资源
+     *
+     * @return List<String>
+     * @Description
+     * @author jun
+     * @time:2017年8月2日 下午3:08:00
+     */
+    public static Map qqpNewList() {
+        Map mapNew = new HashMap();
         try {
-            System.out.println(URLEncoder.encode("我", "gbk"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
+
+            Document doc = Jsoup.connect("http://www.qiqipu.com/")
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                    .timeout(10000)
+                    .get();
+            Elements elements = doc.getElementsByClass("commend typebox");
+            for (int i = 0; i < elements.size(); i++) {
+                if (i == 0 || i == 3) {
+                    continue;
+                }
+                List<Map> list = new ArrayList<Map>();
+                Elements lis = elements.get(i).getElementsByTag("ul").get(0).getElementsByTag("li");
+                for (Element li : lis) {
+                    Elements a = li.getElementsByTag("a");
+                    Elements img = li.getElementsByTag("img");
+                    String region = li.getElementsByTag("div").get(0).text();
+                    String regions[]=StringUtils.split(region, "-");
+                    Map<String, String> map = Maps.newHashMap();
+                    map.put("a", a.get(0).attr("href"));
+                    map.put("img", img.get(0).attr("src"));
+                    map.put("name", img.get(0).attr("alt"));
+                    map.put("year", regions[0]);
+                    if(regions.length>1){
+                        map.put("region", "地区："+regions[1]);
+                    }
+                    list.add(map);
+                }
+                if(i==1){
+                    mapNew.put("movie", list);
+                }else if (i==2){
+                    mapNew.put("tv", list);
+                }else if (i==4){
+                    mapNew.put("variety", list);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error(e);
             e.printStackTrace();
         }
+        return mapNew;
+    }
+
+    public static void main(String[] args) {
+        qqpNewList();
     }
 }

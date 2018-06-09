@@ -76,5 +76,17 @@ public class MovieController extends BaseController {
         return responseObject;
     }
 
+    /**
+     * 七七铺最新资源
+     *
+     * @param bisMovie
+     * @return
+     */
+    @RequestMapping(value = "qqpNewList")
+    public ResponseObject qqpNewList(BisMovie bisMovie) {
+        ResponseObject responseObject = buildResObject();
+        responseObject.setData(FilmUtil.qqpNewList());
+        return responseObject;
+    }
 
 }
