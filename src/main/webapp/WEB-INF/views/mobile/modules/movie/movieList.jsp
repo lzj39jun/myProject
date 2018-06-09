@@ -198,7 +198,7 @@
                             '  <div class="card demo-card-header-pic">' +
                             '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
                             '         <img class="card-cover" src="' + data.img + '" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
-                            '         <div class="card-content" style="top: -90px;left: -60px;">' +
+                            '         <div class="card-content" style="top: -60px;left: -40px;">' +
                             '            <div class="card-content-inner">' +
                             '                <p class="color-gray">年份：' + data.year + '</p>' +
                             '                 <p>' + data.region + '</p>' +
@@ -238,7 +238,7 @@
                             '  <div class="card demo-card-header-pic">' +
                             '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
                             '         <img class="card-cover" src="' + data.img + '" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
-                            '         <div class="card-content" style="top: -90px;left: -60px;">' +
+                            '         <div class="card-content" style="top: -60px;left: -40px;">' +
                             '            <div class="card-content-inner">' +
                             '                <p class="color-gray">年份：' + data.year + '</p>' +
                             '                 <p>' + data.region + '</p>' +
@@ -276,7 +276,7 @@
                     '  <div class="card demo-card-header-pic">' +
                     '      <div valign="bottom" class="card-header color-white no-border no-padding">' +
                     '         <img class="card-cover" src="' + data.img + '" alt="" style="width: 150px;height: 200px;margin-left: 5%;margin-top: 5%;">' +
-                    '         <div class="card-content" style="top: -90px;left: -60px;">' +
+                    '         <div class="card-content" style="top: -60px;left: -40px;">' +
                     '            <div class="card-content-inner">' +
                     '                <p class="color-gray">年份：' + data.year + '</p>' +
                     '                 <p>' + data.region + '</p>' +
