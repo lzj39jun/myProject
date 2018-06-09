@@ -106,6 +106,11 @@
 <script type="text/javascript" src="${ctxStatic}/clipboard/clipboard.min.js"></script>
 <script type="text/javascript" src="${ctxStatic}/ckplayer/ckplayer/ckplayer.js" charset="utf-8"></script>
 <script>
+    var isPc=true;
+    if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)) { //移动端
+        isPc=false;
+    }
+    console.log(isPc);
     //打开自动初始化页面的功能
     //建议不要打开自动初始化，而是自己调用 $.init 方法完成初始化
     $.config = {
@@ -220,9 +225,10 @@
         var newVideoObject = {
             container: '#video', //容器的ID
             variable: 'player',
-            autoplay: false, //是否自动播放
-            loaded: 'loadedHandler', //当播放器加载后执行的函数
-            video: videoUrl
+            autoplay: true, //是否自动播放
+            html5m3u8:isPc,
+//            loaded: 'loadedHandler', //当播放器加载后执行的函数
+            video:videoUrl
         }
         player = new ckplayer(newVideoObject);
 
@@ -282,5 +288,6 @@
         player.videoPause();
         player.videoClear()
     });
+
 </script>
 </html>
