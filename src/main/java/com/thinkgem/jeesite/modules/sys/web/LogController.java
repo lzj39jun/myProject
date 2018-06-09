@@ -17,6 +17,8 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.Log;
 import com.thinkgem.jeesite.modules.sys.service.LogService;
 
+import java.util.Map;
+
 /**
  * 日志Controller
  * @author ThinkGem
@@ -35,6 +37,14 @@ public class LogController extends BaseController {
         Page<Log> page = logService.findPage(new Page<Log>(request, response), log); 
         model.addAttribute("page", page);
 		return "modules/sys/logList";
+	}
+
+	@RequiresPermissions("sys:log:view")
+	@RequestMapping(value = {"findByNumberList"})
+	public String findByNumberList(Log log, HttpServletRequest request, HttpServletResponse response, Model model) {
+        Page<Map> page = logService.findByNumberList(new Page<Map>(request, response), log);
+        model.addAttribute("page", page);
+		return "modules/sys/logNumberList";
 	}
 
 }

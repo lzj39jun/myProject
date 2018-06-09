@@ -12,6 +12,8 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.dao.LogDao;
 import com.thinkgem.jeesite.modules.sys.entity.Log;
 
+import java.util.Map;
+
 /**
  * 日志Service
  * @author ThinkGem
@@ -33,6 +35,25 @@ public class LogService extends CrudService<LogDao, Log> {
 		
 		return super.findPage(page, log);
 		
+	}
+
+	/**
+	 * 统计访问量
+	 * @param page
+	 * @param log
+	 * @return
+	 */
+	public Page<Map> findByNumberList(Page<Map> page, Log log) {
+
+		// 设置默认时间范围，默认当前月
+		if (log.getBeginDate() == null){
+			log.setBeginDate(DateUtils.setDays(DateUtils.parseDate(DateUtils.getDate()), 1));
+		}
+		if (log.getEndDate() == null){
+			log.setEndDate(DateUtils.addMonths(log.getBeginDate(), 1));
+		}
+		page.setList(dao.findByNumberList(log.getBeginDate(),log.getEndDate()));
+		return page;
 	}
 	
 }
