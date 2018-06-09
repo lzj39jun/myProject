@@ -112,7 +112,7 @@
         autoInit: true
     }
     $(function () {
-        list("复仇者联盟");
+        list("复仇者联盟3");
 
         //单个复制
         var clipboard = new Clipboard('#copyThunder');
