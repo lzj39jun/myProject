@@ -53,7 +53,14 @@
         <!-- 这里是页面内容区 -->
         <div class="content">
             <!-- 电影列表 -->
-            <div class="divList">
+            <div class="divList"></div>
+            <!-- 加群 -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-content-inner">
+                        没有搜到你想看的资源，加QQ群792830535反馈
+                    </div>
+                </div>
             </div>
             <!-- 免责声明 -->
             <div class="card">
