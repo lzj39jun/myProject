@@ -154,7 +154,7 @@ public class FilmUtil {
                 map.put("year", em.get(0).text());
                 map.put("region", span.get(1).text());
                 map.put("performer", p.get(0).text());
-                map.put("number", (new Random().nextInt(9001) + 1000)+"");
+                map.put("number", (new Random().nextInt(9001) + 1000) + "");
                 maps.add(map);
             }
             pageList.setList(maps);
@@ -179,30 +179,27 @@ public class FilmUtil {
         Page<Map<String, String>> pageList = new Page<Map<String, String>>();
         pageList.setPageNo(1);
         try {
-            Document doc = Jsoup.connect("http://www.qiqipu.com" + url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                    .timeout(10000)
-                    .get();
-            Elements lis = doc.getElementsByClass("down_list").get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
-//            Elements vlink_3 = doc.getElementsByClass("vlist");
-//            Elements urlLis = null;
-//            if (vlink_3 != null) {
-//                urlLis = vlink_3.get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
-//            }
-            String ids[] = url.split("/");
-            String id = ids[ids.length - 1];
-            List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
-            for (int i = 0; i < lis.size(); i++) {
-                Elements a = lis.get(i).getElementsByTag("a");
-                Elements thunder = lis.get(i).getElementsByTag("input");
-                Map<String, String> map = Maps.newHashMap();
-                map.put("title", a.get(0).attr("title"));
-                map.put("a", a.get(0).attr("href"));
-                map.put("thunder", thunder.get(0).attr("value"));
-                map.put("m3u8Url", "");
-                map.put("m3u8Url", url + "/player.html?" + id + "-0-" + i);
+            List<Map<String, String>> maps = filter(url);
+            if (maps.isEmpty()) {
+                Document doc = Jsoup.connect("http://www.qiqipu.com" + url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                        .timeout(10000)
+                        .get();
+                Elements lis = doc.getElementsByClass("down_list").get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
+                String ids[] = url.split("/");
+                String id = ids[ids.length - 1];
+                for (int i = 0; i < lis.size(); i++) {
+                    Elements a = lis.get(i).getElementsByTag("a");
+                    Elements thunder = lis.get(i).getElementsByTag("input");
+                    Map<String, String> map = Maps.newHashMap();
+                    map.put("title", a.get(0).attr("title"));
+                    map.put("a", a.get(0).attr("href"));
+                    map.put("thunder", thunder.get(0).attr("value"));
+                    map.put("m3u8Url", "");
+                    map.put("m3u8Url", url + "/player.html?" + id + "-0-" + i);
 
-                maps.add(map);
+                    maps.add(map);
+                }
             }
             pageList.setCount(maps.size());
             pageList.setList(maps);
@@ -322,23 +319,23 @@ public class FilmUtil {
                     Elements a = li.getElementsByTag("a");
                     Elements img = li.getElementsByTag("img");
                     String region = li.getElementsByTag("div").get(0).text();
-                    String regions[]=StringUtils.split(region, "-");
+                    String regions[] = StringUtils.split(region, "-");
                     Map<String, String> map = Maps.newHashMap();
                     map.put("a", a.get(0).attr("href"));
                     map.put("img", img.get(0).attr("src"));
                     map.put("name", img.get(0).attr("alt"));
                     map.put("year", regions[0]);
-                    map.put("number", (new Random().nextInt(901) + 100)+"");
-                    if(regions.length>1){
-                        map.put("region", "地区："+regions[1]);
+                    map.put("number", (new Random().nextInt(901) + 100) + "");
+                    if (regions.length > 1) {
+                        map.put("region", "地区：" + regions[1]);
                     }
                     list.add(map);
                 }
-                if(i==1){
+                if (i == 1) {
                     mapNew.put("movie", list);
-                }else if (i==2){
+                } else if (i == 2) {
                     mapNew.put("tv", list);
-                }else if (i==4){
+                } else if (i == 4) {
                     mapNew.put("variety", list);
                 }
             }
@@ -347,6 +344,34 @@ public class FilmUtil {
             e.printStackTrace();
         }
         return mapNew;
+    }
+
+    /**
+     * 直接指定地址
+     *
+     * @param id
+     * @return
+     */
+    public static List<Map<String, String>> filter(String id) {
+        List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
+        if (id.equals("/dy/khp/36991/")) {
+            ///dy/khp/36991/
+            ///dy/xjp/39558/
+            Map<String, String> map = Maps.newHashMap();
+            map.put("title", "侏罗纪世界2");
+            map.put("a", id);
+            map.put("thunder", "");
+            map.put("m3u8Url", id + "/player.html?" + id + "-0-0");
+            maps.add(map);
+        }else if (id.equals("/dy/xjp/39558/")) {
+            Map<String, String> map = Maps.newHashMap();
+            map.put("title", "猛虫过江");
+            map.put("a", id);
+            map.put("thunder", "");
+            map.put("m3u8Url", id + "/player.html?" + id + "-0-0");
+            maps.add(map);
+        }
+        return maps;
     }
 
     public static void main(String[] args) {
