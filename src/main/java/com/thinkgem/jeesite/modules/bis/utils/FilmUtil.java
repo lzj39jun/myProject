@@ -178,9 +178,10 @@ public class FilmUtil {
     public static Page<Map<String, String>> findQqpViewByUrl(String url) {
         Page<Map<String, String>> pageList = new Page<Map<String, String>>();
         pageList.setPageNo(1);
+        List<Map<String, String>> maps = new ArrayList<Map<String, String>>();
         try {
-            List<Map<String, String>> maps = filter(url);
-            if (maps.isEmpty()) {
+//            maps = filter(url);
+//            if (maps.isEmpty()) {
                 Document doc = Jsoup.connect("http://www.qiqipu.com" + url)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
                         .timeout(10000)
@@ -195,19 +196,22 @@ public class FilmUtil {
                     map.put("title", a.get(0).attr("title"));
                     map.put("a", a.get(0).attr("href"));
                     map.put("thunder", thunder.get(0).attr("value"));
-                    map.put("m3u8Url", "");
                     map.put("m3u8Url", url + "/player.html?" + id + "-0-" + i);
-
                     maps.add(map);
                 }
-            }
-            pageList.setCount(maps.size());
-            pageList.setList(maps);
+
+//            }
         } catch (Exception e) {
             LOGGER.error(e);
-            e.printStackTrace();
+            Map<String, String> map = Maps.newHashMap();
+            map.put("title", "电影");
+            map.put("thunder", "只能在线播放");
+            map.put("m3u8Url", url + "/player.html?" + url + "-0-" + 0);
+            maps.add(map);
         }
         LOGGER.error("pageList" + JsonUtils.object2Json(pageList));
+        pageList.setCount(maps.size());
+        pageList.setList(maps);
         return pageList;
     }
 
@@ -363,7 +367,7 @@ public class FilmUtil {
             map.put("thunder", "");
             map.put("m3u8Url", id + "/player.html?" + id + "-0-0");
             maps.add(map);
-        }else if (id.equals("/dy/xjp/39558/")) {
+        } else if (id.equals("/dy/xjp/39558/")) {
             Map<String, String> map = Maps.newHashMap();
             map.put("title", "猛虫过江");
             map.put("a", id);
