@@ -278,8 +278,11 @@ public class FilmUtil {
                     "            var url= data[1]; ";
 
             urlJs = urlJs.substring(0, urlJs.lastIndexOf(",urlinfo")) + ";";
+            LOGGER.info("---1");
             for (int n = 0; n < 10; n++) {
+                LOGGER.info("---2-"+n);
                 engine.put("nn", n);
+                LOGGER.info("---3-"+n);
                 engine.eval(urlJs + urlM);
                 m3u8url = (String) engine.get("url");
                 if (m3u8url.substring(m3u8url.lastIndexOf(".") + 1, m3u8url.length()).equals("m3u8")) {
