@@ -238,7 +238,7 @@
             if (result.success) {
                 var content = "";
                 newData = result.data;
-                var list = newData.movie;
+                var list =defaultList();
                 if (list.length > 0) {
                     $.each(list, function (i, data) {
                         content += ' <div class="content-block-title"><h3>' + data.name + '</h3></div> ' +
@@ -271,7 +271,7 @@
         var content = "";
         var list
         if (type == 0) {
-            list = newData.movie;
+            list = defaultList();
         } else if (type == 1) {
             list = newData.tv;
         } else if (type == 2) {
@@ -299,6 +299,19 @@
         }
         $(".divList").html(content);
         $.hidePreloader();
+    }
+
+    //默认电影列表
+    function defaultList() {
+        var data=Array();
+        data[0]={a:"/dy/dzp/36864/",name:"狄仁杰之四大天王",img:"http://pic.ikacc.com/pic/images/2017-12/201712109455659674.jpg",year:"2018",region:"地区：大陆",number:"2136"};
+        data[1]={a:"/dy/xjp/39642/",name:"西虹市首富",img:"http://pic.ikacc.com/pic/images/2018-5/2018511114966774.jpg",year:"2018",region:"地区：大陆",number:"7782"};
+        data[2]={a:"/dy/jqp/39239/",name:"我不是药神",img:"http://pic.ikacc.com/pic/images/2018-4/20184121258778039.jpg",year:"2018",region:"地区：大陆",number:"5686"};
+        data[3]={a:"/dy/xjp/39638/",name:"龙虾刑警",img:"http://pic.ikacc.com/pic/images/2018-5/20185110265067503.jpg",year:"2018",region:"地区：大陆",number:"8635"};
+        data[4]={a:"/dy/dzp/40298/",name:"邪不压正",img:"http://pic.ikacc.com/pic/images/2018-6/20186311381784280.jpg",year:"2018",region:"地区：大陆",number:"6794"};
+        data[5]={a:"/dy/dzp/36992/",name:"死侍2",img:"http://pic.ikacc.com/pic/images/2017-12/2017122115333993607.jpg",year:"2018",region:"地区：大陆",number:"7149"};
+        data[6]={a:"/dy/dzp/39244/",name:"动物世界 2018",img:"http://pic.ikacc.com/pic/images/2018-4/201841213462387936.jpg",year:"2018",region:"地区：大陆",number:"1120"};
+        return data;
     }
 
     var player;
