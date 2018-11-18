@@ -304,20 +304,24 @@
     //默认电影列表
     function defaultList() {
         var data=Array();
-        data[0]={a:"/dy/dzp/35509/",name:"碟中谍6",img:"http://pic.ikacc.com/pic/images/2017-8/201783021474664840.jpg",year:"2018",region:"地区：欧美",number:"7619"};
-        data[1]={a:"/dy/dzp/39242/",name:"蚁人2：黄蜂女现身",img:"http://pic.ikacc.com/pic/images/2018-4/201841213242698383.jpg",year:"2018",region:"地区：欧美",number:"7619"};
-        data[2]={a:"/dy/xjp/42438/",name:"快把我哥带走",img:"http://pic.ikacc.com/pic/images/2018-8/20188182091826086.jpg",year:"2018",region:"地区：大陆",number:"7619"};
-        data[3]={a:"/dy/xjp/39680/",name:"一出好戏",img:"http://pic.ikacc.com/pic/images/2018-5/20185310375991128.jpg",year:"2018",region:"地区：大陆",number:"7619"};
-        data[4]={a:"/dy/xjp/40476/",name:"爱情公寓电影版",img:"http://pic.ikacc.com/pic/images/2018-6/20186101730632709.jpg",year:"2018",region:"地区：大陆",number:"2545"};
-        data[5]={a:"/dy/dzp/36864/",name:"狄仁杰之四大天王",img:"http://pic.ikacc.com/pic/images/2017-12/201712109455659674.jpg",year:"2018",region:"地区：大陆",number:"2136"};
-        data[6]={a:"/dy/xjp/39642/",name:"西虹市首富",img:"http://pic.ikacc.com/pic/images/2018-5/2018511114966774.jpg",year:"2018",region:"地区：大陆",number:"7782"};
-        data[7]={a:"/dy/jqp/39239/",name:"我不是药神",img:"http://pic.ikacc.com/pic/images/2018-4/20184121258778039.jpg",year:"2018",region:"地区：大陆",number:"5686"};
-        data[8]={a:"/dy/xjp/39638/",name:"龙虾刑警",img:"http://pic.ikacc.com/pic/images/2018-5/20185110265067503.jpg",year:"2018",region:"地区：大陆",number:"8635"};
-        data[9]={a:"/dy/dzp/40298/",name:"邪不压正",img:"http://pic.ikacc.com/pic/images/2018-6/20186311381784280.jpg",year:"2018",region:"地区：大陆",number:"6794"};
-        data[10]={a:"/dy/dzp/36992/",name:"死侍2",img:"http://pic.ikacc.com/pic/images/2017-12/2017122115333993607.jpg",year:"2018",region:"地区：大陆",number:"7149"};
-        data[11]={a:"/dy/dzp/39244/",name:"动物世界 2018",img:"http://pic.ikacc.com/pic/images/2018-4/201841213462387936.jpg",year:"2018",region:"地区：大陆",number:"1120"};
-        data[12]={a:"/dy/khp/36991/",name:"侏罗纪世界2失落王国",img:"http://pic.ikacc.com/pic/images/2017-12/2017122115244365638.jpg",year:"2018",region:"地区：大陆",number:"4665"};
-        data[13]={a:"/dy/dzp/36376/",name:"金蝉脱壳2",img:"http://pic.ikacc.com/pic/images/2017-11/201711816515662734.jpg",year:"2018",region:"地区：大陆",number:"7882"};
+        data[0]={a:"/dy/dzp/39513/",name:"毒液",img:"http://pic.ikacc.com/pic/images/2018-4/201842515425137530.jpg",year:"2018",region:"地区：欧美",number:"7619"};
+        data[1]={a:"/dy/xjp/39697/",name:"李茶的姑妈",img:"http://pic.ikacc.com/pic/images/2018-5/2018541031697014.jpg",year:"2018",region:"地区：欧美",number:"7619"};
+        data[2]={a:"/dy/dzp/39971/",name:"无双",img:"http://pic.ikacc.com/pic/images/2018-5/20185181617966189.jpg",year:"2018",region:"地区：欧美",number:"7619"};
+        data[3]={a:"/dy/xjp/39700/",name:"胖子行动队",img:"http://pic.ikacc.com/pic/images/2018-5/20185410595046310.jpg",year:"2018",region:"地区：欧美",number:"7619"};
+        data[4]={a:"/dy/dzp/35509/",name:"碟中谍6",img:"http://pic.ikacc.com/pic/images/2017-8/201783021474664840.jpg",year:"2018",region:"地区：欧美",number:"7619"};
+        data[5]={a:"/dy/dzp/39242/",name:"蚁人2：黄蜂女现身",img:"http://pic.ikacc.com/pic/images/2018-4/201841213242698383.jpg",year:"2018",region:"地区：欧美",number:"7619"};
+        data[6]={a:"/dy/xjp/42438/",name:"快把我哥带走",img:"http://pic.ikacc.com/pic/images/2018-8/20188182091826086.jpg",year:"2018",region:"地区：大陆",number:"7619"};
+        data[7]={a:"/dy/xjp/39680/",name:"一出好戏",img:"http://pic.ikacc.com/pic/images/2018-5/20185310375991128.jpg",year:"2018",region:"地区：大陆",number:"7619"};
+        data[8]={a:"/dy/xjp/40476/",name:"爱情公寓电影版",img:"http://pic.ikacc.com/pic/images/2018-6/20186101730632709.jpg",year:"2018",region:"地区：大陆",number:"2545"};
+        data[9]={a:"/dy/dzp/36864/",name:"狄仁杰之四大天王",img:"http://pic.ikacc.com/pic/images/2017-12/201712109455659674.jpg",year:"2018",region:"地区：大陆",number:"2136"};
+        data[10]={a:"/dy/xjp/39642/",name:"西虹市首富",img:"http://pic.ikacc.com/pic/images/2018-5/2018511114966774.jpg",year:"2018",region:"地区：大陆",number:"7782"};
+        data[11]={a:"/dy/jqp/39239/",name:"我不是药神",img:"http://pic.ikacc.com/pic/images/2018-4/20184121258778039.jpg",year:"2018",region:"地区：大陆",number:"5686"};
+        data[12]={a:"/dy/xjp/39638/",name:"龙虾刑警",img:"http://pic.ikacc.com/pic/images/2018-5/20185110265067503.jpg",year:"2018",region:"地区：大陆",number:"8635"};
+        data[13]={a:"/dy/dzp/40298/",name:"邪不压正",img:"http://pic.ikacc.com/pic/images/2018-6/20186311381784280.jpg",year:"2018",region:"地区：大陆",number:"6794"};
+        data[14]={a:"/dy/dzp/36992/",name:"死侍2",img:"http://pic.ikacc.com/pic/images/2017-12/2017122115333993607.jpg",year:"2018",region:"地区：大陆",number:"7149"};
+        data[15]={a:"/dy/dzp/39244/",name:"动物世界 2018",img:"http://pic.ikacc.com/pic/images/2018-4/201841213462387936.jpg",year:"2018",region:"地区：大陆",number:"1120"};
+        data[16]={a:"/dy/khp/36991/",name:"侏罗纪世界2失落王国",img:"http://pic.ikacc.com/pic/images/2017-12/2017122115244365638.jpg",year:"2018",region:"地区：大陆",number:"4665"};
+        data[17]={a:"/dy/dzp/36376/",name:"金蝉脱壳2",img:"http://pic.ikacc.com/pic/images/2017-11/201711816515662734.jpg",year:"2018",region:"地区：大陆",number:"7882"};
         return data;
     }
 
