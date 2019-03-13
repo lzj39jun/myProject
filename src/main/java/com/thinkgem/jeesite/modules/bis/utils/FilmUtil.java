@@ -128,28 +128,8 @@ public class FilmUtil {
         try {
             LOGGER.info("---------------搜索电影：" + name);
             name = URLEncoder.encode(name, "gbk");
-
-            final WebClient webClient = new WebClient(BrowserVersion.CHROME);//新建一个模拟谷歌Chrome浏览器的浏览器客户端对象
-
-            webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
-            webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);//当HTTP的状态非200时是否抛出异常, 这里选择不需要
-            webClient.getOptions().setActiveXNative(false);
-            webClient.getOptions().setCssEnabled(false);//是否启用CSS, 因为不需要展现页面, 所以不需要启用
-            webClient.getOptions().setJavaScriptEnabled(true); //很重要，启用JS
-            webClient.setAjaxController(new NicelyResynchronizingAjaxController());//很重要，设置支持AJAX
-
-            HtmlPage htmlPage = null;
-            try {
-                htmlPage = webClient.getPage("http://www.qiqipu.com/search.asp?page=" + page + "&searchword=" + name + "&searchtype=-1");//尝试加载上面图片例子给出的网页
-            } catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                webClient.close();
-            }
-//            webClient.waitForBackgroundJavaScript(3000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
-            String pageXml = htmlPage.asXml();//直接将加载完成的页面转换成xml格式的字符串
-
-            Document doc = Jsoup.parse(pageXml);//获取html文档
+            String urls="http://www.qiqipu.com/search.asp?page=" + page + "&searchword=" + name + "&searchtype=-1";
+            Document doc = Jsoup.parse(htmlPage(urls));//获取html文档
 
 //            Document doc = Jsoup.connect("http://www.qiqipu.com/search.asp")
 //                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
@@ -210,10 +190,12 @@ public class FilmUtil {
         try {
 //            maps = filter(url);
 //            if (maps.isEmpty()) {
-                Document doc = Jsoup.connect("http://www.qiqipu.com" + url)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                        .timeout(10000)
-                        .get();
+            String urls="http://www.qiqipu.com" + url;
+            Document doc = Jsoup.parse(htmlPage(urls));//获取html文档
+//                Document doc = Jsoup.connect("http://www.qiqipu.com" + url)
+//                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+//                        .timeout(10000)
+//                        .get();
                 Elements lis = doc.getElementsByClass("down_list").get(0).getElementsByTag("ul").get(0).getElementsByTag("li");
                 String ids[] = url.split("/");
                 String id = ids[ids.length - 1];
@@ -282,11 +264,13 @@ public class FilmUtil {
     public static String findM3u8Url(String url) {
         String m3u8url = "";
         try {
+            String urls="http://www.qiqipu.com" + url;
+            Document docs = Jsoup.parse(htmlPage(urls));//获取html文档
             //获取js
-            Document docs = Jsoup.connect("http://www.qiqipu.com" + url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                    .timeout(3000)
-                    .get();
+//            Document docs = Jsoup.connect("http://www.qiqipu.com" + url)
+//                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+//                    .timeout(3000)
+//                    .get();
             Elements playbox = docs.getElementsByClass("playbox");
             String js = playbox.get(0).getElementsByTag("script").get(0).attr("src");
             //获取js内容解析
@@ -338,11 +322,12 @@ public class FilmUtil {
     public static Map qqpNewList() {
         Map mapNew = new HashMap();
         try {
-
-            Document doc = Jsoup.connect("http://www.qiqipu.com/")
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                    .timeout(10000)
-                    .get();
+            String urls="http://www.qiqipu.com" ;
+            Document doc = Jsoup.parse(htmlPage(urls));//获取html文档
+//            Document doc = Jsoup.connect("http://www.qiqipu.com/")
+//                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+//                    .timeout(10000)
+//                    .get();
             Elements elements = doc.getElementsByClass("commend typebox");
             for (int i = 0; i < elements.size(); i++) {
                 if (i == 0 || i == 3) {
@@ -407,6 +392,26 @@ public class FilmUtil {
             maps.add(map);
         }
         return maps;
+    }
+
+    public static String htmlPage(String url){
+        final WebClient webClient = new WebClient(BrowserVersion.CHROME);//新建一个模拟谷歌Chrome浏览器的浏览器客户端对象
+        webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
+        webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);//当HTTP的状态非200时是否抛出异常, 这里选择不需要
+        webClient.getOptions().setActiveXNative(false);
+        webClient.getOptions().setCssEnabled(false);//是否启用CSS, 因为不需要展现页面, 所以不需要启用
+        webClient.getOptions().setJavaScriptEnabled(false); //很重要，启用JS
+//        webClient.setAjaxController(new NicelyResynchronizingAjaxController());//很重要，设置支持AJAX
+        HtmlPage htmlPage = null;
+        try {
+            htmlPage = webClient.getPage(url);//尝试加载上面图片例子给出的网页
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            webClient.close();
+        }
+            webClient.waitForBackgroundJavaScript(3000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
+        return htmlPage.asXml();//直接将加载完成的页面转换成xml格式的字符串
     }
 
     public static void main(String[] args) {
