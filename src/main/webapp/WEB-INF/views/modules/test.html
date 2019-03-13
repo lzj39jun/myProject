@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <script type="text/javascript">
+        var data = {
+            'uid_name' : "__cm_warden_uid",
+            'uid_value' : "1420b17edd67ca4645863b3ba19467b9cookie",
+            'upi_name' : "__cm_warden_upi",
+            'upi_value' : "MTE1LjE5My4xNzUuMTAz",
+            'url' : "http://www.qiqipu.com/search.asp?page=1&searchword=%CE%D2&searchtype=-1",
+            'quite_time' : "86400"
+        };
+        function getCookie(cookie_name){
+            if (document.cookie.length>0){
+                c_start=document.cookie.indexOf(cookie_name + "=")
+                if (c_start!=-1){
+                    c_start=c_start + cookie_name.length+1
+                    c_end=document.cookie.indexOf(";",c_start)
+                    if (c_end==-1) c_end=document.cookie.length
+                    return unescape(document.cookie.substring(c_start,c_end))
+                }
+            }
+            return "";
+        }
+        function setCookie(cookie_name,value,cookie_time){
+            var exdate=new Date();
+            exdate.setTime(exdate.getTime()+(cookie_time*1000));
+            document.cookie=cookie_name+ "=" +escape(value)+((cookie_time==null) ? "" : "; path=/; expires="+exdate.toGMTString());
+        }
+        function jump(){
+            setCookie(data['uid_name'],data['uid_value'],data['quite_time']);
+            setCookie(data['upi_name'],data['upi_value'],data['quite_time']);
+            window.location = data['url'];
+        }
+    </script>
+</head>
+<body onload="javascript:jump()">
+</body>
+</html>s

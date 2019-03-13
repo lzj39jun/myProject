@@ -1,5 +1,9 @@
 package com.thinkgem.jeesite.modules.bis.utils;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.HttpUtil;
@@ -125,10 +129,34 @@ public class FilmUtil {
             LOGGER.info("---------------搜索电影：" + name);
             name = URLEncoder.encode(name, "gbk");
 
-            Document doc = Jsoup.connect("http://www.qiqipu.com/search.asp?page=" + page + "&searchword=" + name + "&searchtype=-1")
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                    .timeout(10000)
-                    .get();
+            final WebClient webClient = new WebClient(BrowserVersion.CHROME);//新建一个模拟谷歌Chrome浏览器的浏览器客户端对象
+
+            webClient.getOptions().setThrowExceptionOnScriptError(false);//当JS执行出错的时候是否抛出异常, 这里选择不需要
+            webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);//当HTTP的状态非200时是否抛出异常, 这里选择不需要
+            webClient.getOptions().setActiveXNative(false);
+            webClient.getOptions().setCssEnabled(false);//是否启用CSS, 因为不需要展现页面, 所以不需要启用
+            webClient.getOptions().setJavaScriptEnabled(true); //很重要，启用JS
+            webClient.setAjaxController(new NicelyResynchronizingAjaxController());//很重要，设置支持AJAX
+
+            HtmlPage htmlPage = null;
+            try {
+                htmlPage = webClient.getPage("http://www.qiqipu.com/search.asp?page=" + page + "&searchword=" + name + "&searchtype=-1");//尝试加载上面图片例子给出的网页
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                webClient.close();
+            }
+//            webClient.waitForBackgroundJavaScript(3000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
+            String pageXml = htmlPage.asXml();//直接将加载完成的页面转换成xml格式的字符串
+
+            Document doc = Jsoup.parse(pageXml);//获取html文档
+
+//            Document doc = Jsoup.connect("http://www.qiqipu.com/search.asp")
+//                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+//                    .timeout(10000)
+//                    .header("Cookie","UM_distinctid=1694cc01f3b386-0e396bf3be123-36667105-13c680-1694cc01f3c2f8; bdshare_firstime=1551770871492; bz_finger=7a06ec65a1376ea3cb574fb70ab9248f; __cm_warden_upi=MTE1LjE5My4xNzUuMTAz; security_session_verify=d667099b95f5132fe7a5108c97180efa; ASPSESSIONIDSCSTSBTC=CJDNMMGDHKGCHMFPEOKKLEAC; 2242_2232_115.193.175.103=1; CNZZDATA1273089026=955754203-1551765859-http%253A%252F%252Fwww.qiqipu.com%252F%7C1552379156; CNZZDATA1260755200=392148868-1551769236-http%253A%252F%252Fwww.qiqipu.com%252F%7C1552379261; Hm_lvt_473f6d12b3211620aa788ce202546e01=1551770853,1552380526; 77gg=2; cscpvrich8838_fidx=3; __cm_warden_uid=c7ff6aa044fa5ad7a7c7811431168da7cookie; AD_480=\"idx:0\"; Hm_lpvt_473f6d12b3211620aa788ce202546e01=1552381351")
+////                    .data("searchword",name)
+//                    .post();
             //获取分页
 //			 LOGGER.info("---------------doc："+doc);
             Elements strong = doc.getElementsByTag("strong");
