@@ -400,7 +400,7 @@ public class FilmUtil {
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);//当HTTP的状态非200时是否抛出异常, 这里选择不需要
         webClient.getOptions().setActiveXNative(false);
         webClient.getOptions().setCssEnabled(false);//是否启用CSS, 因为不需要展现页面, 所以不需要启用
-        webClient.getOptions().setJavaScriptEnabled(false); //很重要，启用JS
+        webClient.getOptions().setJavaScriptEnabled(true); //很重要，启用JS
 //        webClient.setAjaxController(new NicelyResynchronizingAjaxController());//很重要，设置支持AJAX
         HtmlPage htmlPage = null;
         try {
@@ -410,8 +410,10 @@ public class FilmUtil {
         }finally {
             webClient.close();
         }
+//            htmlPage.executeJavaScript("jump");
             webClient.waitForBackgroundJavaScript(3000);//异步JS执行需要耗时,所以这里线程要阻塞30秒,等待异步JS执行结束
-        return htmlPage.asXml();//直接将加载完成的页面转换成xml格式的字符串
+        String str=htmlPage.asXml();
+        return str;//直接将加载完成的页面转换成xml格式的字符串
     }
 
     public static void main(String[] args) {
